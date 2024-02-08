@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Tabs with jQuery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f4f4f4;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .content {
+            display: none;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+    <h1>Welcome to the Course Portal!</h1>
+
+    <div id="tabs-container"></div>
+
+    <script>
+        $(document).ready(function () {
+            // Fetch tabs dynamically from the REST API
+            $.ajax({
+                url: 'http://localhost:8080/api/course',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Render tabs dynamically
+                    renderTabs(data);
+                },
+                error: function (error) {
+                    console.error('Error fetching tabs:', error);
+                }
+            });
+
+            // Function to render tabs dynamically
+            function renderTabs(data) {
+                var tabsContainer = $('#tabs-container');
+
+                // Loop through the received data to create tabs and corresponding content
+                data.forEach(function (tab) {
+                    // Create tab
+                    var tabElement = $('<div class="tab">' + tab.course_name + '</div>');
+
+                    // Create content
+                    var contentElement = $('<div class="content">' +
+                        '<h2>' + tab.course_name + ' Course</h2>' +
+
+                        '</div>');
+
+                    // Append tab and content to the tabs container
+                    tabsContainer.append(tabElement);
+                    tabsContainer.append(contentElement);
+
+                    // Set click event to handle tab switching
+                    tabElement.click(function () {
+                        $('.content').hide();
+                        contentElement.show();
+                    });
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
