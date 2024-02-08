@@ -1,5 +1,7 @@
 package com.application.courses.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +34,8 @@ public class Chapter {
 	
 	private Integer course_id;
 	
+	@OneToMany(mappedBy = "chapter")
+    private List<Header> headers;
 	public Chapter() {
 		super();
 	}
